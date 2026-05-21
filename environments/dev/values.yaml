@@ -7,8 +7,8 @@
 # ============================================================
 
 image:
-  repository: tejaspise/gitops-app
-  tag: "PLACEHOLDER_UPDATED_BY_JENKINS"   # jenkins replaces this field 
+  repository: nginx
+  tag: "alpine"   # jenkins replaces this field 
   pullPolicy: IfNotPresent
 
 replicaCount: 1
