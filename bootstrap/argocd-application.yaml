@@ -1,0 +1,46 @@
+# ============================================================
+# argocd-application.yaml
+# ============================================================
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gitops-app-dev
+  namespace: argocd
+  labels:
+    environment: dev
+    team: platform
+  # Finalizer ensures ArgoCD removes managed resources when
+  # Application CR is deleted (cascading delete).
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/Tejaspise93/gitops-config.git
+    targetRevision: main
+    path: environments/dev        # Helm values
+
+    helm:
+      chartPath: charts/gitops-app
+      valueFiles:
+        - values.yaml             # Relative to the 'path' above (environments/dev/values.yaml)
+
+  destination:
+    server: https://kubernetes.default.svc   # In-cluster — ArgoCD manages its own cluster
+    namespace: dev
+
+  syncPolicy:
+    automated:
+      prune: true        # Delete resources removed from Git
+      selfHeal: true     # Revert any manual kubectl changes back to Git state
+    syncOptions:
+      - CreateNamespace=true     # Auto-create 'dev' namespace if it doesn't exist
+      - PrunePropagationPolicy=foreground   # Wait for child resources to delete before parent
+      - PruneLast=true           # Delete old resources after new ones are healthy
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m

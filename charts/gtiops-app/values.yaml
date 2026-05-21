@@ -1,0 +1,77 @@
+# ============================================================
+# gitops-config/charts/gitops-app/values.yaml
+# Default values for the gitops-app Helm chart.
+# Environment-specific overrides live in environments/dev/values.yaml
+# ============================================================
+
+replicaCount: 1
+
+image:
+  repository: YOUR_DOCKERHUB_USERNAME/gitops-app
+  tag: "latest"          # will be replaced by environments/dev/values.yaml
+  pullPolicy: IfNotPresent
+
+# -- Pod-level annotations.
+# Prometheus scrape annotations are set here so Phase 3 only needs to
+# flip prometheus.io/scrape to "true" without touching templates.
+podAnnotations:
+  prometheus.io/scrape: "false"
+  prometheus.io/path: "/actuator/prometheus"
+  prometheus.io/port: "8080"
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: gitops-app.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "256Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+
+# Spring Boot's health indicators.
+livenessProbe:
+  httpGet:
+    path: /actuator/health
+    port: 8080
+  initialDelaySeconds: 30   # Give the pod time to start
+  periodSeconds: 10
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /actuator/health
+    port: 8080
+  initialDelaySeconds: 20
+  periodSeconds: 5
+  failureThreshold: 3
+
+# runAsUser 1001 must match the UID in the Dockerfile (non-root user).
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1001
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: false   # Spring Boot writes temp files; keep false for now
+
+podSecurityContext:
+  fsGroup: 1001
+
+namespace: dev
+
+serviceAccount:
+  create: false   # No cloud-provider IRSA/Workload Identity needed yet
+  name: ""

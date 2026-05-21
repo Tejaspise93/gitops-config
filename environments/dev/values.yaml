@@ -1,3 +1,30 @@
+# ============================================================
+# gitops-config/environments/dev/values.yaml
+# Dev environment overrides for the gitops-app Helm chart.
+#
+# Jenkins pipeline updates image.tag automatically on every build.
+# All other values inherit from charts/gitops-app/values.yaml.
+# ============================================================
+
 image:
-  repository: YOUR_DOCKERHUB_USERNAME/gitops-app
-  tag: "placeholder"
+  repository: tejaspise/gitops-app
+  tag: "PLACEHOLDER_UPDATED_BY_JENKINS"   # jenkins replaces this field 
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+namespace: dev
+
+# Enable Prometheus scraping in dev so metrics are available.
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/path: "/actuator/prometheus"
+  prometheus.io/port: "8080"
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "256Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
