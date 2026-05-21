@@ -22,7 +22,6 @@ spec:
     path: charts/gitops-app        # Point directly at the chart
 
     helm:
-      chartPath: charts/gitops-app
       valueFiles:
         - ../../environments/dev/values.yaml             # Relative to the 'path' above (environments/dev/values.yaml)
 
