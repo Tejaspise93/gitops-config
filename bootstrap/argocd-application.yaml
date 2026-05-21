@@ -19,12 +19,12 @@ spec:
   source:
     repoURL: https://github.com/Tejaspise93/gitops-config.git
     targetRevision: main
-    path: environments/dev        # Helm values
+    path: charts/gitops-app        # Point directly at the chart
 
     helm:
       chartPath: charts/gitops-app
       valueFiles:
-        - values.yaml             # Relative to the 'path' above (environments/dev/values.yaml)
+        - ../../environments/dev/values.yaml             # Relative to the 'path' above (environments/dev/values.yaml)
 
   destination:
     server: https://kubernetes.default.svc   # In-cluster — ArgoCD manages its own cluster
