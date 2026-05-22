@@ -7,8 +7,8 @@
 # ============================================================
 
 image:
-  repository: nginxinc/nginx-unprivileged
-  tag: "alpine"   # jenkins replaces this field 
+  repository: tejaspise/gitops-app
+  tag: "latest"   # jenkins replaces this field 
   pullPolicy: IfNotPresent
 
 replicaCount: 1
