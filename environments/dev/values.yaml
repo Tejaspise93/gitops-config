@@ -8,19 +8,15 @@
 
 image:
   repository: tejaspise/gitops-app
-  tag: "latest"   # jenkins replaces this field 
+  tag: "06025d7c3be50a5317a9b26e5beb995ad22da0ed" # jenkins replaces this field 
   pullPolicy: IfNotPresent
-
 replicaCount: 1
-
 namespace: dev
-
 # Enable Prometheus scraping in dev so metrics are available.
 podAnnotations:
   prometheus.io/scrape: "true"
   prometheus.io/path: "/actuator/prometheus"
   prometheus.io/port: "8080"
-
 resources:
   requests:
     cpu: "100m"
