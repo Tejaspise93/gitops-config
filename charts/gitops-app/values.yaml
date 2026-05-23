@@ -7,12 +7,12 @@
 replicaCount: 1
 
 image:
-  repository: YOUR_DOCKERHUB_USERNAME/gitops-app
+  repository: docker_repo/gitops-app
   tag: "latest"          # will be replaced by environments/dev/values.yaml
   pullPolicy: IfNotPresent
 
-# -- Pod-level annotations.
-# Prometheus scrape annotations are set here so Phase 3 only needs to
+# Pod-level annotations.
+# Prometheus scrape annotations are set here so monitoring only needs to
 # flip prometheus.io/scrape to "true" without touching templates.
 podAnnotations:
   prometheus.io/scrape: "false"
@@ -73,5 +73,5 @@ podSecurityContext:
 namespace: dev
 
 serviceAccount:
-  create: false   # No cloud-provider IRSA/Workload Identity needed yet
+  create: false
   name: ""
