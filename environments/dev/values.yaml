@@ -8,7 +8,7 @@
 
 image:
   repository: tejaspise/gitops-app
-  tag: "06025d7c3be50a5317a9b26e5beb995ad22da0ed" # jenkins replaces this field 
+  tag: "49fbb85876d2cc072af5d6f3883aa5cf445d1ebf" # jenkins replaces this field 
   pullPolicy: IfNotPresent
 replicaCount: 1
 namespace: dev
