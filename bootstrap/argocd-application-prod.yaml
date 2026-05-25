@@ -1,0 +1,44 @@
+# ============================================================
+# bootstrap/argocd-application-prod.yaml
+# ArgoCD Application CR for the prod environment.
+# ============================================================
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gitops-app-prod
+  namespace: argocd
+  labels:
+    environment: prod
+    team: platform
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/Tejaspise93/gitops-config.git
+    targetRevision: main
+    path: charts/gitops-app
+
+    helm:
+      valueFiles:
+        - ../../environments/prod/values.yaml
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: prod
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 5m

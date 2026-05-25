@@ -1,0 +1,29 @@
+# ============================================================
+# gitops-config/environments/prod/values.yaml
+# Prod environment overrides for the gitops-app Helm chart.
+#
+# image.tag is updated by Jenkinsfile.promote via manual promotion.
+# ============================================================
+
+image:
+  repository: tejaspise/gitops-app
+  tag: "PROMOTED_BY_JENKINS"    # Jenkinsfile.prod overwrites this field
+  pullPolicy: IfNotPresent
+
+replicaCount: 2
+
+namespace: prod
+
+# Prometheus scraping enabled in prod
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/path: "/actuator/prometheus"
+  prometheus.io/port: "8080"
+
+resources:
+  requests:
+    cpu: "200m"
+    memory: "512Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
