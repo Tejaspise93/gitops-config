@@ -1,7 +1,7 @@
 apiVersion: v2
 name: gitops-app
 description: >
-  Spring Boot GitOps demo application — CI/CD pipeline with Jenkins.
+  Spring Boot GitOps demo application - CI/CD pipeline with Jenkins.
 type: application
 # chartversion
 version: 0.1.0

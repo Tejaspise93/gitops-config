@@ -2,7 +2,7 @@
 
 Configuration repository for the **gitops-app** GitOps pipeline project.
 
-This repo is the GitOps source of truth — it holds the Helm chart and environment-specific values for the application. No application code lives here. Jenkins writes to it; ArgoCD reads from it.
+This repo is the GitOps source of truth - it holds the Helm chart and environment-specific values for the application. No application code lives here. Jenkins writes to it; ArgoCD reads from it.
 
 **Application repo:** [https://github.com/Tejaspise93/gitops-app](https://github.com/Tejaspise93/gitops-app)
 
@@ -17,7 +17,7 @@ This repo is one half of a GitOps pipeline split:
 | `gitops-app` | Application source code, Dockerfile, Jenkinsfile | Developers |
 | `gitops-config` (this repo) | Helm chart, environment values | Jenkins (automated), Engineers (manual) |
 
-ArgoCD watches this repo continuously. When Jenkins updates the image tag in `environments/dev/values.yaml` after a successful build, ArgoCD detects the change and syncs the cluster automatically — no `kubectl` in the pipeline.
+ArgoCD watches this repo continuously. When Jenkins updates the image tag in `environments/dev/values.yaml` after a successful build, ArgoCD detects the change and syncs the cluster automatically - no `kubectl` in the pipeline.
 
 ---
 
@@ -26,7 +26,7 @@ ArgoCD watches this repo continuously. When Jenkins updates the image tag in `en
 ```
 gitops-config/
 ├── bootstrap/
-│   └── argocd-application.yaml       # ArgoCD Application CR — apply once to bootstrap
+│   └── argocd-application.yaml       # ArgoCD Application CR - apply once to bootstrap
 ├── charts/
 │   └── gitops-app/
 │       ├── Chart.yaml                # Chart metadata
@@ -38,7 +38,7 @@ gitops-config/
 │           └── ingress.yaml          # Ingress (disabled by default)
 └── environments/
     └── dev/
-        └── values.yaml               # Dev overrides — image.tag updated by Jenkins
+        └── values.yaml               # Dev overrides - image.tag updated by Jenkins
 ```
 ---
 
@@ -67,7 +67,7 @@ Developer pushes code to gitops-app
           v
           v
     Application running at new version
-    └── Zero-downtime — old pod removed only after new pod passes readiness probe
+    └── Zero-downtime - old pod removed only after new pod passes readiness probe
 ```
 
 ---
@@ -109,7 +109,7 @@ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/st
 # Wait for all pods to be ready
 kubectl wait --for=condition=Ready pods --all -n argocd --timeout=300s
 
-# Verify — all 7 pods should show 1/1 Running
+# Verify - all 7 pods should show 1/1 Running
 kubectl get pods -n argocd
 ```
 
@@ -119,7 +119,7 @@ kubectl get pods -n argocd
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 ```
 
-> Keep this terminal open — closing it stops the port-forward.
+> Keep this terminal open - closing it stops the port-forward.
 
 ### 4. Login via ArgoCD CLI
 
@@ -196,7 +196,7 @@ kubectl get pods -n dev -w
 kubectl get deployment -n dev
 kubectl get service -n dev
 
-# Check ArgoCD application health — should show Synced and Healthy
+# Check ArgoCD application health - should show Synced and Healthy
 kubectl get application gitops-app-dev -n argocd
 
 # Stream pod logs

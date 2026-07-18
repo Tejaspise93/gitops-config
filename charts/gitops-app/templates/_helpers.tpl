@@ -18,7 +18,7 @@ Create a default fully qualified app name.
 {{- end }}
 
 {{/*
-Common labels — applied to all resources for consistent selection.
+Common labels - applied to all resources for consistent selection.
 */}}
 {{- define "gitops-app.labels" -}}
 helm.sh/chart: {{ include "gitops-app.name" . }}-{{ .Chart.Version | replace "+" "_" }}
@@ -28,7 +28,7 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 
 {{/*
-Selector labels — used in matchLabels and pod template labels.
+Selector labels - used in matchLabels and pod template labels.
 Must be IMMUTABLE after first deploy (changing them breaks the Deployment).
 */}}
 {{- define "gitops-app.selectorLabels" -}}

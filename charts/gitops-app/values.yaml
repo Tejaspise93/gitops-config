@@ -7,7 +7,7 @@
 replicaCount: 1
 
 image:
-  repository: docker_repo/gitops-app
+  repository: tejaspise/gitops-app
   tag: "latest"          # will be replaced by environments/dev/values.yaml
   pullPolicy: IfNotPresent
 
