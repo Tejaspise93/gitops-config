@@ -10,7 +10,7 @@ image:
   repository: tejaspise/gitops-app
   tag: "7644be770bf00e13d98f3c49ab1ec0a8d70d10dc" # jenkins replaces this field 
   pullPolicy: IfNotPresent
-replicaCount: 1
+replicaCount: 2
 namespace: dev
 # Enable Prometheus scraping in dev so metrics are available.
 podAnnotations:
