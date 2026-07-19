@@ -48,7 +48,5 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           env:
-            - name: JAVA_OPTS
-              value: "-XX:MaxRAMPercentage=75.0 -XX:+UseContainerSupport"
             - name: SPRING_PROFILES_ACTIVE
               value: "default"
