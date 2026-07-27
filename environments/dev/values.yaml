@@ -8,7 +8,7 @@
 
 image:
   repository: tejaspise/gitops-app
-  tag: "8d0e127e6fd1576942469b65d67fca0138df4733" # CI pipeline replaces this field 
+  tag: "186f4f517446a3789e1157ea7c1a90d1d8060a9e" # CI pipeline replaces this field 
   pullPolicy: IfNotPresent
 replicaCount: 1
 namespace: dev
