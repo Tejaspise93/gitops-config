@@ -1,0 +1,21 @@
+# charts/gitops-app/templates/servicemonitor.yaml
+{{- if .Values.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "gitops-app.fullname" . }}
+  namespace: monitoring          # ServiceMonitor lives in monitoring, not dev/prod
+  labels:
+    {{- include "gitops-app.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "gitops-app.selectorLabels" . | nindent 6 }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}   # tells Prometheus to look for the Service in dev/prod, not monitoring
+  endpoints:
+    - port: http
+      path: /actuator/prometheus
+      interval: 30s
+{{- end }}

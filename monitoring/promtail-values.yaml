@@ -1,0 +1,22 @@
+# monitoring/promtail-values.yaml
+config:
+  clients:
+    - url: http://loki:3100/loki/api/v1/push
+  snippets:
+    pipelineStages:
+      - cri: {}
+      - json:
+          expressions:
+            level: level
+            logger: logger_name
+            message: message
+      - labels:
+          level:
+
+resources:
+  requests:
+    cpu: 25m
+    memory: 64Mi
+  limits:
+    cpu: 50m
+    memory: 128Mi

@@ -1,0 +1,43 @@
+# charts/gitops-app/templates/prometheusrule.yaml
+{{- if .Values.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ include "gitops-app.fullname" . }}-alerts
+  namespace: monitoring
+  labels:
+    {{- include "gitops-app.labels" . | nindent 4 }}
+spec:
+  groups:
+    - name: gitops-app.rules
+      rules:
+        - alert: GitopsAppDown
+          expr: up{job="{{ include "gitops-app.fullname" . }}"} == 0
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: "gitops-app instance {{ "{{ $labels.instance }}" }} is down"
+
+        - alert: GitopsAppHighErrorRate
+          expr: |
+            rate(http_server_requests_seconds_count{job="{{ include "gitops-app.fullname" . }}",status=~"5.."}[5m])
+              /
+            rate(http_server_requests_seconds_count{job="{{ include "gitops-app.fullname" . }}"}[5m]) > 0.05
+          for: 2m
+          labels:
+            severity: warning
+          annotations:
+            summary: "5xx rate above 5% on gitops-app"
+
+        - alert: GitopsAppHighLatencyP99
+          expr: |
+            histogram_quantile(0.99,
+              rate(http_server_requests_seconds_bucket{job="{{ include "gitops-app.fullname" . }}"}[5m])
+            ) > 1
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "p99 latency above 1s on gitops-app"
+{{- end }}

@@ -75,3 +75,6 @@ namespace: dev
 serviceAccount:
   create: false
   name: ""
+
+serviceMonitor:
+  enabled: true

@@ -1,0 +1,69 @@
+# monitoring/kube-prometheus-stack-values.yaml
+
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: false   # pick up ServiceMonitors from ANY namespace/label
+    retention: 3d
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 300m
+        memory: 512Mi
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: local-path
+          resources:
+            requests:
+              storage: 5Gi
+    nodeSelector:
+      role: monitoring
+
+grafana:
+  adminPassword: "admin123"          # change before exposing beyond localhost
+  persistence:
+    enabled: true
+    storageClassName: local-path
+    size: 1Gi
+  service:
+    type: NodePort
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 100m
+      memory: 256Mi
+  sidecar:
+    datasources:
+      enabled: true                  # auto-loads ConfigMaps labeled grafana_datasource: "1"
+    dashboards:
+      enabled: true                  # auto-loads ConfigMaps labeled grafana_dashboard: "1"
+  nodeSelector:
+    role: monitoring
+
+alertmanager:
+  alertmanagerSpec:
+    storage:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: local-path
+          resources:
+            requests:
+              storage: 1Gi
+  nodeSelector:
+    role: monitoring
+
+kube-state-metrics:
+  resources:
+    requests:
+      cpu: 25m
+      memory: 32Mi
+
+nodeExporter:
+  resources:
+    requests:
+      cpu: 25m
+      memory: 32Mi
