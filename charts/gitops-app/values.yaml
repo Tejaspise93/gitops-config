@@ -77,4 +77,4 @@ serviceAccount:
   name: ""
 
 serviceMonitor:
-  enabled: true
+  enabled: false
